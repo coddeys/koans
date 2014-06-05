@@ -14,7 +14,15 @@
 #   about_triangle_project_2.rb
 #
 def triangle(a, b, c)
-  # WRITE THIS CODE
+  raise TriangleError if a <= 0 || b <=0 || c <=0
+  return :equilateral if (a == b) && (b == c)
+  if (a == b) || (b == c) || (a==c)
+    if a == b 
+      raise TriangleError if c != (a * a + b * b).sqrt
+    end
+    return :isosceles 
+  end
+  return :scalene
 end
 
 # Error class used in part 2.  No need to change this code.
