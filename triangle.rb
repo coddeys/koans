@@ -14,14 +14,23 @@
 #   about_triangle_project_2.rb
 #
 def triangle(a, b, c)
-  raise TriangleError if a <= 0 || b <=0 || c <=0
-  return :equilateral if (a == b) && (b == c)
+  
+  if [a,b,c].min <= 0
+    raise TriangleError, "Zero or Negative length doesn't make any sense."
+  end
+  x, y, z = [a,b,c].sort
+  if x + y <= z
+    raise TriangleError, "Any two sides of a triangle should add up to more than the third side."
+  end
+
+  if (a == b) && (b == c)
+    return :equilateral 
+  end
+
   if (a == b) || (b == c) || (a==c)
-    if a == b 
-      raise TriangleError if c != (a * a + b * b).sqrt
-    end
     return :isosceles 
   end
+
   return :scalene
 end
 
