@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/neo')
-
+require 'pry'
 # Project: Create a Proxy Class
 #
 # In this assignment, create a proxy class (one is started for you
@@ -16,10 +16,28 @@ class Proxy
 
   def initialize(target_object)
     @object = target_object
-    # ADD MORE CODE HERE
+    @messages = Hash.new
   end
 
-  # WRITE CODE HERE
+
+  def method_missing(name, *args, &block)
+    i = @messages[name] || 0
+    @messages.store(name, i+1)
+    @object.send(name, *args, &block)
+  end
+
+  def messages
+    @messages.keys
+  end
+
+  def called?(method)
+    @messages.has_key?(method)
+  end
+
+  def number_of_times_called(method)
+    @messages.fetch(method, 0)
+  end
+  
 end
 
 # The proxy object should pass the following Koan:
@@ -30,7 +48,6 @@ class AboutProxyObjectProject < Neo::Koan
     tv = Proxy.new(Television.new)
 
     # HINT: Proxy class is defined above, may need tweaking...
-
     assert tv.instance_of?(Proxy)
   end
 
